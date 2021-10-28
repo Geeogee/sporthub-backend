@@ -74,4 +74,17 @@ public class UserController {
 		
 		System.out.println("Utente non presente nel database!");
 	}
+	
+	@PostMapping(path="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody User updateUser(@RequestBody User user) {
+		
+		int user_id = user.getUser_id();
+		Optional<User> userToUpdate = userRepo.findById(user_id);
+		
+		if(userToUpdate.isPresent()) {
+			
+			userRepo.save(user);
+		}
+		return user;
+	}
 }
