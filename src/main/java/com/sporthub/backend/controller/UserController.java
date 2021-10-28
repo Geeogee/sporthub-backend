@@ -7,14 +7,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sporthub.backend.model.Role;
 import com.sporthub.backend.model.User;
 import com.sporthub.backend.repository.RoleRepository;
 import com.sporthub.backend.repository.UserRepository;
@@ -35,6 +33,17 @@ public class UserController {
 	@GetMapping("/all")
 	public @ResponseBody Iterable<User> getUsers(){
 		return userRepo.findAll();
+	}
+	
+	@GetMapping("/{id}")
+	public @ResponseBody User getUser(
+			@PathVariable Integer id
+	) {
+		Optional<User> userInfo = userRepo.findById(id);
+		if(userInfo.isPresent()) {
+			return userInfo.get();
+		}
+		return null;
 	}
 	
 	@PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
